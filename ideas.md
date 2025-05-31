@@ -6,3 +6,4 @@ interesting thing about user everytime they log in
 if they are interested giving them recommendations based on their health and habits
 if the current day or some habits can cause user to have some problems 
 dynamic daily calorie calculator
+break down the added food.
