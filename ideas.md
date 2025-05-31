@@ -4,4 +4,5 @@ breakdown needs to be smarter it is dumb as FUCK! (first break down to dishes ->
 AI personalization should be more effective
 interesting thing about user everytime they log in
 if they are interested giving them recommendations based on their health and habits
-warning if the current day or some habits can cause user to have some problems 
+if the current day or some habits can cause user to have some problems 
+dynamic daily calorie calculator
