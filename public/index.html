@@ -1,490 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simple Calorie Logger</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-        
-        .input-section {
-            margin-bottom: 25px;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-            font-family: inherit;
-            resize: vertical;
-            transition: border-color 0.3s;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        textarea::placeholder {
-            color: #999;
-        }
-        
-        .button-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        button {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .primary-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .primary-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .secondary-btn {
-            background: #f8f9fa;
-            color: #666;
-            border: 2px solid #e1e5e9;
-        }
-        
-        .secondary-btn:hover {
-            background: #e9ecef;
-        }
-        
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        .clarification {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .clarification p {
-            margin-bottom: 15px;
-            color: #856404;
-            font-weight: 500;
-        }
-        
-        .clarification input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ffeaa7;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        
-        .result {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .result h3 {
-            color: #155724;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .food-item {
-            background: rgba(255,255,255,0.7);
-            padding: 10px 15px;
-            margin: 8px 0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .food-name {
-            font-weight: 500;
-            color: #333;
-        }
-        
-        .food-calories {
-            color: #666;
-            font-size: 0.9em;
-        }
-        
-        .total-calories {
-            background: #155724;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-top: 15px;
-        }
-        
-        .history {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        
-        .history h3 {
-            color: #495057;
-            margin-bottom: 15px;
-        }
-        
-        .history-item {
-            background: white;
-            padding: 12px 15px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .history-date {
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        .history-calories {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .examples {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .examples h4 {
-            color: #495057;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-        
-        .example-item {
-            color: #666;
-            font-size: 0.85em;
-            margin: 5px 0;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .example-item:hover {
-            color: #667eea;
-        }
-        
-        .status {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 0.9em;
-        }
-        
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status.info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        font-weight: 300;
+      }
+
+      .input-section {
+        margin-bottom: 25px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 100px;
+        padding: 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+        transition: border-color 0.3s;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      textarea::placeholder {
+        color: #999;
+      }
+
+      .button-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      button {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .primary-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .primary-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .secondary-btn {
+        background: #f8f9fa;
+        color: #666;
+        border: 2px solid #e1e5e9;
+      }
+
+      .secondary-btn:hover {
+        background: #e9ecef;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      .clarification {
+        background: #fff3cd;
+        border: 2px solid #ffeaa7;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .clarification p {
+        margin-bottom: 15px;
+        color: #856404;
+        font-weight: 500;
+      }
+
+      .clarification input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ffeaa7;
+        border-radius: 8px;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      .result {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .result h3 {
+        color: #155724;
+        margin-bottom: 15px;
+        font-size: 1.3em;
+      }
+
+      .food-item {
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px 15px;
+        margin: 8px 0;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .food-name {
+        font-weight: 500;
+        color: #333;
+      }
+
+      .food-calories {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .total-calories {
+        background: #155724;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: 600;
+        margin-top: 15px;
+      }
+
+      .history {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+      }
+
+      .history h3 {
+        color: #495057;
+        margin-bottom: 15px;
+      }
+
+      .history-item {
+        background: white;
+        padding: 12px 15px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .history-date {
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      .history-calories {
+        font-weight: 600;
+        color: #333;
+      }
+
+      .examples {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+      }
+
+      .examples h4 {
+        color: #495057;
+        margin-bottom: 10px;
+        font-size: 0.9em;
+      }
+
+      .example-item {
+        color: #666;
+        font-size: 0.85em;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .example-item:hover {
+        color: #667eea;
+      }
+
+      .status {
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 0.9em;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🍽️ Calorie Logger</h1>
-        
-        <div class="input-section">
-            <textarea id="mealInput" 
-                     placeholder="Describe your meal... (e.g., 'scrambled eggs with toast and orange juice')"></textarea>
-            
-            <div class="button-row">
-                <button id="logButton" class="primary-btn">Log Meal</button>
-                <button id="clearButton" class="secondary-btn">Clear</button>
-            </div>
+      <h1>🍽️ Calorie Logger</h1>
+
+      <div class="input-section">
+        <textarea
+          id="mealInput"
+          placeholder="Describe your meal... (e.g., 'scrambled eggs with toast and orange juice')"
+        ></textarea>
+
+        <div class="button-row">
+          <button id="logButton" class="primary-btn">Log Meal</button>
+          <button id="clearButton" class="secondary-btn">Clear</button>
         </div>
-        
-        <div class="examples">
-            <h4>Quick Examples (click to try):</h4>
-            <div class="example-item" onclick="fillExample('coffee and bagel')">☕ Coffee and bagel</div>
-            <div class="example-item" onclick="fillExample('chicken salad with water')">🥗 Chicken salad with water</div>
-            <div class="example-item" onclick="fillExample('banana and orange juice')">🍌 Banana and orange juice</div>
+      </div>
+
+      <div class="examples">
+        <h4>Quick Examples (click to try):</h4>
+        <div class="example-item" onclick="fillExample('coffee and bagel')">
+          ☕ Coffee and bagel
         </div>
-        
-        <div id="clarification" class="clarification">
-            <p id="clarificationText"></p>
-            <input id="clarificationInput" placeholder="Your answer..."/>
-            <button id="clarifyButton" class="primary-btn">Submit</button>
+        <div
+          class="example-item"
+          onclick="fillExample('chicken salad with water')"
+        >
+          🥗 Chicken salad with water
         </div>
-        
-        <div id="result" class="result"></div>
-        
-        <div class="history">
-            <h3>📊 Today's Meals</h3>
-            <div id="historyList">
-                <p style="color: #999; font-style: italic; text-align: center;">No meals logged yet</p>
-            </div>
+        <div
+          class="example-item"
+          onclick="fillExample('banana and orange juice')"
+        >
+          🍌 Banana and orange juice
         </div>
+        <div
+          class="example-item"
+          onclick="fillExample('Wendys burger no mayo and replace the bun with lettuce')"
+        >
+          🍔 Wendys burger no mayo and replace the bun with lettuce
+        </div>
+      </div>
+
+      <div id="clarification" class="clarification">
+        <p id="clarificationText"></p>
+        <input id="clarificationInput" placeholder="Your answer..." />
+        <button id="clarifyButton" class="primary-btn">Submit</button>
+      </div>
+
+      <div id="result" class="result"></div>
+
+      <div class="history">
+        <h3>📊 Today's Meals</h3>
+        <div id="historyList">
+          <p style="color: #999; font-style: italic; text-align: center">
+            No meals logged yet
+          </p>
+        </div>
+      </div>
     </div>
 
     <script>
-        let originalDescription = '';
+      let originalDescription = "";
 
-        // Fill example text
-        function fillExample(text) {
-            document.getElementById('mealInput').value = text;
-            document.getElementById('mealInput').focus();
+      // Fill example text
+      function fillExample(text) {
+        document.getElementById("mealInput").value = text;
+        document.getElementById("mealInput").focus();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const mealInput = document.getElementById("mealInput");
+        const logButton = document.getElementById("logButton");
+        const clearButton = document.getElementById("clearButton");
+        const clarificationDiv = document.getElementById("clarification");
+        const clarificationText = document.getElementById("clarificationText");
+        const clarificationInput =
+          document.getElementById("clarificationInput");
+        const clarifyButton = document.getElementById("clarifyButton");
+        const resultDiv = document.getElementById("result");
+        const historyList = document.getElementById("historyList");
+
+        // Clear button
+        clearButton.addEventListener("click", function () {
+          mealInput.value = "";
+          resultDiv.style.display = "none";
+          clarificationDiv.style.display = "none";
+          mealInput.focus();
+        });
+
+        // Log meal button
+        logButton.addEventListener("click", async function () {
+          const description = mealInput.value.trim();
+
+          if (!description) {
+            mealInput.focus();
+            showStatus("Please describe your meal first!", "info");
+            return;
+          }
+
+          originalDescription = description;
+          await logMeal(description);
+        });
+
+        // Enter key to submit
+        mealInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            logButton.click();
+          }
+        });
+
+        // Clarification submit
+        clarifyButton.addEventListener("click", async function () {
+          const clarification = clarificationInput.value.trim();
+
+          if (!clarification) {
+            clarificationInput.focus();
+            return;
+          }
+
+          const fullDescription = originalDescription + " " + clarification;
+
+          clarificationDiv.style.display = "none";
+          await logMeal(fullDescription);
+        });
+
+        // Main logging function
+        async function logMeal(description) {
+          try {
+            logButton.disabled = true;
+            logButton.textContent = "Processing...";
+            resultDiv.style.display = "none";
+
+            const response = await fetch("/api/logMeal", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ description }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Failed to log meal");
+            }
+
+            if (data.meal.clarificationNeeded) {
+              showClarification(data.meal.question);
+            } else {
+              displayResult(data.meal, data.source);
+              renderHistory(data.mealLog || []);
+              mealInput.value = "";
+
+              // Show success status
+              const source =
+                data.source === "database"
+                  ? "from our food database"
+                  : "using AI analysis";
+              showStatus(`✅ Meal logged successfully ${source}`, "success");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            showStatus("❌ " + error.message, "info");
+          } finally {
+            logButton.disabled = false;
+            logButton.textContent = "Log Meal";
+          }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const mealInput = document.getElementById('mealInput');
-            const logButton = document.getElementById('logButton');
-            const clearButton = document.getElementById('clearButton');
-            const clarificationDiv = document.getElementById('clarification');
-            const clarificationText = document.getElementById('clarificationText');
-            const clarificationInput = document.getElementById('clarificationInput');
-            const clarifyButton = document.getElementById('clarifyButton');
-            const resultDiv = document.getElementById('result');
-            const historyList = document.getElementById('historyList');
+        // Show status message
+        function showStatus(message, type) {
+          const existingStatus = document.querySelector(".status");
+          if (existingStatus) existingStatus.remove();
 
-            // Clear button
-            clearButton.addEventListener('click', function() {
-                mealInput.value = '';
-                resultDiv.style.display = 'none';
-                clarificationDiv.style.display = 'none';
-                mealInput.focus();
+          const statusDiv = document.createElement("div");
+          statusDiv.className = `status ${type}`;
+          statusDiv.textContent = message;
+
+          mealInput.parentNode.appendChild(statusDiv);
+
+          setTimeout(() => statusDiv.remove(), 3000);
+        }
+
+        // Show clarification UI
+        function showClarification(question) {
+          clarificationText.textContent = question;
+          clarificationDiv.style.display = "block";
+          clarificationInput.value = "";
+          clarificationInput.focus();
+        }
+
+        // Display results
+        function displayResult(meal, source) {
+          resultDiv.innerHTML = "";
+
+          const title = document.createElement("h3");
+          title.textContent = "✅ Meal Logged Successfully";
+          resultDiv.appendChild(title);
+
+          if (meal.foods && meal.foods.length > 0) {
+            meal.foods.forEach((food) => {
+              const foodDiv = document.createElement("div");
+              foodDiv.className = "food-item";
+
+              const nameSpan = document.createElement("span");
+              nameSpan.className = "food-name";
+              nameSpan.textContent = food.name;
+
+              const calSpan = document.createElement("span");
+              calSpan.className = "food-calories";
+              calSpan.textContent = `${food.calories} kcal`;
+
+              foodDiv.appendChild(nameSpan);
+              foodDiv.appendChild(calSpan);
+              resultDiv.appendChild(foodDiv);
+            });
+          }
+
+          const totalDiv = document.createElement("div");
+          totalDiv.className = "total-calories";
+          totalDiv.textContent = `Total: ${meal.totalCalories} calories`;
+          resultDiv.appendChild(totalDiv);
+
+          resultDiv.style.display = "block";
+        }
+
+        // Render history
+        function renderHistory(logArray) {
+          historyList.innerHTML = "";
+
+          if (logArray.length === 0) {
+            const emptyMsg = document.createElement("p");
+            emptyMsg.textContent = "No meals logged yet";
+            emptyMsg.style.color = "#999";
+            emptyMsg.style.fontStyle = "italic";
+            emptyMsg.style.textAlign = "center";
+            historyList.appendChild(emptyMsg);
+            return;
+          }
+
+          // Show recent meals first
+          const recentMeals = [...logArray].reverse().slice(0, 10);
+
+          recentMeals.forEach((entry) => {
+            const historyItem = document.createElement("div");
+            historyItem.className = "history-item";
+
+            const dateSpan = document.createElement("span");
+            dateSpan.className = "history-date";
+            const date = new Date(entry.timestamp);
+            dateSpan.textContent = date.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
             });
 
-            // Log meal button
-            logButton.addEventListener('click', async function() {
-                const description = mealInput.value.trim();
-                
-                if (!description) {
-                    mealInput.focus();
-                    showStatus('Please describe your meal first!', 'info');
-                    return;
-                }
+            const calSpan = document.createElement("span");
+            calSpan.className = "history-calories";
+            calSpan.textContent = `${entry.totalCalories} kcal`;
 
-                originalDescription = description;
-                await logMeal(description);
-            });
-
-            // Enter key to submit
-            mealInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    logButton.click();
-                }
-            });
-
-            // Clarification submit
-            clarifyButton.addEventListener('click', async function() {
-                const clarification = clarificationInput.value.trim();
-                
-                if (!clarification) {
-                    clarificationInput.focus();
-                    return;
-                }
-
-                const fullDescription = originalDescription + ' ' + clarification;
-                
-                clarificationDiv.style.display = 'none';
-                await logMeal(fullDescription);
-            });
-
-            // Main logging function
-            async function logMeal(description) {
-                try {
-                    logButton.disabled = true;
-                    logButton.textContent = 'Processing...';
-                    resultDiv.style.display = 'none';
-
-                    const response = await fetch('/api/logMeal', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ description })
-                    });
-
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Failed to log meal');
-                    }
-
-                    if (data.meal.clarificationNeeded) {
-                        showClarification(data.meal.question);
-                    } else {
-                        displayResult(data.meal, data.source);
-                        renderHistory(data.mealLog || []);
-                        mealInput.value = '';
-                        
-                        // Show success status
-                        const source = data.source === 'database' ? 'from our food database' : 'using AI analysis';
-                        showStatus(`✅ Meal logged successfully ${source}`, 'success');
-                    }
-
-                } catch (error) {
-                    console.error('Error:', error);
-                    showStatus('❌ ' + error.message, 'info');
-                } finally {
-                    logButton.disabled = false;
-                    logButton.textContent = 'Log Meal';
-                }
-            }
-
-            // Show status message
-            function showStatus(message, type) {
-                const existingStatus = document.querySelector('.status');
-                if (existingStatus) existingStatus.remove();
-                
-                const statusDiv = document.createElement('div');
-                statusDiv.className = `status ${type}`;
-                statusDiv.textContent = message;
-                
-                mealInput.parentNode.appendChild(statusDiv);
-                
-                setTimeout(() => statusDiv.remove(), 3000);
-            }
-
-            // Show clarification UI
-            function showClarification(question) {
-                clarificationText.textContent = question;
-                clarificationDiv.style.display = 'block';
-                clarificationInput.value = '';
-                clarificationInput.focus();
-            }
-
-            // Display results
-            function displayResult(meal, source) {
-                resultDiv.innerHTML = '';
-                
-                const title = document.createElement('h3');
-                title.textContent = '✅ Meal Logged Successfully';
-                resultDiv.appendChild(title);
-
-                if (meal.foods && meal.foods.length > 0) {
-                    meal.foods.forEach(food => {
-                        const foodDiv = document.createElement('div');
-                        foodDiv.className = 'food-item';
-                        
-                        const nameSpan = document.createElement('span');
-                        nameSpan.className = 'food-name';
-                        nameSpan.textContent = food.name;
-                        
-                        const calSpan = document.createElement('span');
-                        calSpan.className = 'food-calories';
-                        calSpan.textContent = `${food.calories} kcal`;
-                        
-                        foodDiv.appendChild(nameSpan);
-                        foodDiv.appendChild(calSpan);
-                        resultDiv.appendChild(foodDiv);
-                    });
-                }
-
-                const totalDiv = document.createElement('div');
-                totalDiv.className = 'total-calories';
-                totalDiv.textContent = `Total: ${meal.totalCalories} calories`;
-                resultDiv.appendChild(totalDiv);
-
-                resultDiv.style.display = 'block';
-            }
-
-            // Render history
-            function renderHistory(logArray) {
-                historyList.innerHTML = '';
-                
-                if (logArray.length === 0) {
-                    const emptyMsg = document.createElement('p');
-                    emptyMsg.textContent = 'No meals logged yet';
-                    emptyMsg.style.color = '#999';
-                    emptyMsg.style.fontStyle = 'italic';
-                    emptyMsg.style.textAlign = 'center';
-                    historyList.appendChild(emptyMsg);
-                    return;
-                }
-
-                // Show recent meals first
-                const recentMeals = [...logArray].reverse().slice(0, 10);
-                
-                recentMeals.forEach(entry => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    const dateSpan = document.createElement('span');
-                    dateSpan.className = 'history-date';
-                    const date = new Date(entry.timestamp);
-                    dateSpan.textContent = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    
-                    const calSpan = document.createElement('span');
-                    calSpan.className = 'history-calories';
-                    calSpan.textContent = `${entry.totalCalories} kcal`;
-                    
-                    historyItem.appendChild(dateSpan);
-                    historyItem.appendChild(calSpan);
-                    historyList.appendChild(historyItem);
-                });
-            }
-        });
+            historyItem.appendChild(dateSpan);
+            historyItem.appendChild(calSpan);
+            historyList.appendChild(historyItem);
+          });
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
